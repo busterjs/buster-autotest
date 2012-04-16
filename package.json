@@ -1,0 +1,24 @@
+{
+    "name": "buster-autotest",
+    "version": "0.1.0",
+    "description": "Watch files and run buster tests on save",
+    "homepage": "http://busterjs.org/docs/autotest",
+    "author": {
+        "name": "Christian Johansen",
+        "email": "christian@cjohansen.no",
+        "url": "http://cjohansen.no"
+    },
+    "contributors": [{
+        "name": "August Lilleaas",
+        "email": "august.lilleaas@gmail.com",
+        "url": "http://augustl.com"
+    }],
+    "main": "./lib/buster-autotest",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/busterjs/buster-autotest.git"
+    },
+    "dependencies": {
+        "fs-watch-tree": "~0.1"
+    }
+}
