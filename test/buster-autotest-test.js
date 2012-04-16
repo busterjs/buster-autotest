@@ -3,6 +3,8 @@ var autotest = require("../lib/buster-autotest");
 var wt = require("fs-watch-tree");
 var cp = require("child_process");
 var util = require("util");
+var path = require("path");
+var glob = require("buster-glob");
 
 buster.testCase("Autotest", {
     setUp: function () {
@@ -21,6 +23,7 @@ buster.testCase("Autotest", {
             return process;
         });
         this.stub(wt, "watchTree");
+        this.stub(glob, "glob").yields(null, []);
         this.clock = this.useFakeTimers();
     },
 
@@ -78,11 +81,11 @@ buster.testCase("Autotest", {
             assert.calledWith(cp.spawn, "buster-test", []);
         },
 
-        "runs all tests in directory": function () {
+        "runs all tests when directory": function () {
             autotest.watch("/some/dir");
             this.emitChange("test", { isDir: true });
             this.clock.tick(10);
-            assert.calledWith(cp.spawn, "buster-test", ["-t", "test/*"]);
+            assert.calledWith(cp.spawn, "buster-test", []);
         },
 
         "adds changed test file to existing -t argument": function () {
@@ -211,6 +214,18 @@ buster.testCase("Autotest", {
             this.failTests();
 
             assert.calledTwice(cp.spawn);
+        },
+
+        "runs related test files": function () {
+            glob.glob.yields(null, ["test/buster-autotest-test.js"]);
+            autotest.watch(path.join(__dirname, "../"));
+            this.emitChange("lib/buster-autotest.js");
+            this.clock.tick(10);
+
+            assert.calledWith(cp.spawn, "buster-test", [
+                "-t",
+                "test/buster-autotest-test.js,lib/buster-autotest.js"
+            ]);
         }
     }
 });
