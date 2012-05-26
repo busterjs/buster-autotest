@@ -18,8 +18,14 @@
         "type": "git",
         "url": "https://github.com/busterjs/buster-autotest.git"
     },
+    "scripts": {
+        "test": "./node_modules/buster/bin/buster-test"
+    },
     "dependencies": {
         "fs-watch-tree": ">=0.1",
         "buster-glob": ">=0.3.1"
+    },
+    "devDependencies": {
+        "buster": ""
     }
 }
