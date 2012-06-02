@@ -192,18 +192,6 @@ buster.testCase("Autotest", {
             assert.calledWith(cp.spawn, "buster-test", ["-t", "test/boing.js"]);
         },
 
-        "does not run all tests when passing after passing": function () {
-            autotest.watch("/some/dir");
-            this.emitChange("test/thing-test.js");
-            this.clock.tick(10);
-            this.passTests();
-            this.emitChange("test/thing-test.js");
-            this.clock.tick(10);
-            this.passTests();
-
-            assert.calledTwice(cp.spawn);
-        },
-
         "does not run all tests when failing after passing": function () {
             autotest.watch("/some/dir");
             this.emitChange("test/thing-test.js");
@@ -212,6 +200,16 @@ buster.testCase("Autotest", {
             this.emitChange("test/thing-test.js");
             this.clock.tick(10);
             this.failTests();
+
+            assert.calledTwice(cp.spawn);
+        },
+
+        "does not re-run all tests after all passing": function () {
+            autotest.watch("/some/dir");
+            this.emitChange("test/thing-test.js");
+            this.clock.tick(10);
+            this.passTests();
+            this.clock.tick(20);
 
             assert.calledTwice(cp.spawn);
         },
