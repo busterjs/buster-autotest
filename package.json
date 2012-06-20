@@ -1,6 +1,6 @@
 {
     "name": "buster-autotest",
-    "version": "0.1.1",
+    "version": "0.2.0",
     "description": "Watch files and run buster tests on save",
     "homepage": "http://busterjs.org/docs/autotest",
     "author": {
@@ -22,10 +22,10 @@
         "test": "./node_modules/buster/bin/buster-test"
     },
     "dependencies": {
-        "fs-watch-tree": ">=0.1",
-        "buster-glob": ">=0.3.1"
+        "fs-watch-tree": ">=0.2.1",
+        "buster-glob": ">=0.3.2"
     },
     "devDependencies": {
-        "buster": ""
+        "buster": "*"
     }
 }
