@@ -4,7 +4,7 @@ var wt = require("fs-watch-tree");
 var cp = require("child_process");
 var util = require("util");
 var path = require("path");
-var glob = require("buster-glob");
+var glob = require("multi-glob");
 var oi = require("../lib/on-interrupt");
 
 buster.testCase("Autotest", {

@@ -9,9 +9,16 @@
         "url": "http://cjohansen.no"
     },
     "contributors": [{
-        "name": "August Lilleaas",
-        "email": "august.lilleaas@gmail.com",
-        "url": "http://augustl.com"
+        "name": "Christian Johansen",
+        "email": "christian@cjohansen.no",
+        "url": "http://cjohansen.no"
+    }, {
+        "name": "Magnar Sveen",
+        "email": "magnars@gmail.com"
+    }, {
+        "name": "Stein Magnus Jodal",
+        "email": "stein.magnus@jodal.no",
+        "url": "http://jodal.no"
     }],
     "main": "./lib/buster-autotest",
     "repository": {
@@ -23,9 +30,9 @@
     },
     "dependencies": {
         "fs-watch-tree": ">=0.2.1",
-        "buster-glob": ">=0.3.2"
+        "multi-glob": ">=0.4.2"
     },
     "devDependencies": {
-        "buster": "*"
+        "buster": "0.6.2"
     }
 }
