@@ -95,7 +95,9 @@ buster.testCase("Autotest", {
             this.emitChange("test/thing-test.js");
             this.clock.tick(10);
             assert.calledWith(
-                cp.spawn, "buster-test", ["-t", "file.js,test/thing-test.js"]
+                cp.spawn,
+                "buster-test",
+                ["-t", "file.js,test/thing-test.js"]
             );
         },
 
@@ -104,7 +106,9 @@ buster.testCase("Autotest", {
             this.emitChange("test/thing-test.js");
             this.clock.tick(10);
             assert.calledWith(
-                cp.spawn, "buster-test", ["--tests", "file.js,test/thing-test.js"]
+                cp.spawn,
+                "buster-test",
+                ["--tests", "file.js,test/thing-test.js"]
             );
         },
 
@@ -115,7 +119,9 @@ buster.testCase("Autotest", {
             this.emitChange("test/thing-test.js");
             this.clock.tick(10);
             assert.calledWith(
-                cp.spawn, "buster-test", [
+                cp.spawn,
+                "buster-test",
+                [
                     "-r",
                     "specification",
                     "--tests",
@@ -181,7 +187,7 @@ buster.testCase("Autotest", {
             assert.calledWith(cp.spawn, "buster-test", []);
         },
 
-        "runs originally selected tests when passing after failing": function () {
+        "runs originally selected tests when pass after fail": function () {
             autotest.watch("/some/dir", { argv: ["-t", "test/boing.js"] });
             this.emitChange("test/thing-test.js");
             this.clock.tick(10);
