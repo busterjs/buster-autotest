@@ -223,7 +223,8 @@ buster.testCase("Autotest", {
         },
 
         "runs related test files": function () {
-            glob.glob.yields(null, ["test/buster-autotest-test.js"]);
+            glob.glob.restore();
+            this.stub(glob, "glob").yields(null, ["test/buster-autotest-test.js"]);
             autotest.watch(path.join(__dirname, "../"));
             this.emitChange("lib/buster-autotest.js");
             this.clock.tick(10);
