@@ -33,6 +33,6 @@
         "multi-glob": ">=0.4.2"
     },
     "devDependencies": {
-        "buster": "0.6.2"
+        "buster": "0.6.11"
     }
 }
