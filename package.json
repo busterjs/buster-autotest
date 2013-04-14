@@ -26,7 +26,7 @@
         "url": "https://github.com/busterjs/buster-autotest.git"
     },
     "scripts": {
-        "test": "./node_modules/buster/bin/buster-test"
+        "test": "node run-tests.js"
     },
     "dependencies": {
         "fs-watch-tree": ">=0.2.1",
