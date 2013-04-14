@@ -1,4 +1,6 @@
-var buster = require("buster");
+var buster = require("buster-node");
+var assert = require("referee").assert;
+var refute = require("referee").refute;
 var autotest = require("../lib/buster-autotest");
 var wt = require("fs-watch-tree");
 var cp = require("child_process");
@@ -6,6 +8,7 @@ var util = require("util");
 var path = require("path");
 var glob = require("multi-glob");
 var oi = require("../lib/on-interrupt");
+var events = require("events");
 
 buster.testCase("Autotest", {
     setUp: function () {
@@ -16,10 +19,10 @@ buster.testCase("Autotest", {
         this.stub(util, "puts", function (str) { self.stdout += str + "\n"; });
         this.processes = [];
         this.stub(cp, "spawn", function () {
-            var process = buster.eventEmitter.create();
+            var process = new events.EventEmitter();
             process.kill = self.spy();
-            process.stdout = buster.eventEmitter.create();
-            process.stderr = buster.eventEmitter.create();
+            process.stdout = new events.EventEmitter();
+            process.stderr = new events.EventEmitter();
             self.processes.push(process);
             self.process = process;
             return process;
