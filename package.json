@@ -1,6 +1,6 @@
 {
     "name": "buster-autotest",
-    "version": "0.2.0",
+    "version": "0.3.0",
     "description": "Watch files and run buster tests on save",
     "homepage": "http://busterjs.org/docs/autotest",
     "author": {
