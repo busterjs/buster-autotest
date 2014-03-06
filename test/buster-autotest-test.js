@@ -177,57 +177,10 @@ buster.testCase("Autotest", {
             assert.calledTwice(cp.spawn);
         },
 
-        "runs all tests when passing after failing": function () {
-            autotest.watch("/some/dir");
-            this.emitChange("test/thing-test.js");
-            this.clock.tick(10);
-            this.failTests();
-            this.emitChange("test/thing-test.js");
-            this.clock.tick(10);
-            this.passTests();
-
-            assert.calledThrice(cp.spawn);
-            assert.calledWith(cp.spawn, "buster-test", []);
-        },
-
-        "runs originally selected tests when pass after fail": function () {
-            autotest.watch("/some/dir", { argv: ["-t", "test/boing.js"] });
-            this.emitChange("test/thing-test.js");
-            this.clock.tick(10);
-            this.failTests();
-            this.emitChange("test/thing-test.js");
-            this.clock.tick(10);
-            this.passTests();
-
-            assert.calledThrice(cp.spawn);
-            assert.calledWith(cp.spawn, "buster-test", ["-t", "test/boing.js"]);
-        },
-
-        "does not run all tests when failing after passing": function () {
-            autotest.watch("/some/dir");
-            this.emitChange("test/thing-test.js");
-            this.clock.tick(10);
-            this.passTests();
-            this.emitChange("test/thing-test.js");
-            this.clock.tick(10);
-            this.failTests();
-
-            assert.calledTwice(cp.spawn);
-        },
-
-        "does not re-run all tests after all passing": function () {
-            autotest.watch("/some/dir");
-            this.emitChange("test/thing-test.js");
-            this.clock.tick(10);
-            this.passTests();
-            this.clock.tick(20);
-
-            assert.calledTwice(cp.spawn);
-        },
-
         "runs related test files": function () {
             glob.glob.restore();
-            this.stub(glob, "glob").yields(null, ["test/buster-autotest-test.js"]);
+            this.stub(glob, "glob").yields(null,
+                ["test/buster-autotest-test.js"]);
             autotest.watch(path.join(__dirname, "../"));
             this.emitChange("lib/buster-autotest.js");
             this.clock.tick(10);
