@@ -2,7 +2,7 @@ var buster = require("buster-node");
 var assert = buster.referee.assert;
 var refute = buster.referee.refute;
 var autotest = require("../lib/buster-autotest");
-var wt = require("fs-watch-tree");
+var chokidar = require('chokidar');
 var cp = require("child_process");
 var util = require("util");
 var path = require("path");
@@ -27,26 +27,43 @@ buster.testCase("Autotest", {
             self.process = process;
             return process;
         });
-        this.stub(wt, "watchTree");
+        this.watcher = {
+            on: this.stub()
+        };
+        this.stub(chokidar, "watch", function () { return self.watcher; });
         this.stub(glob, "glob").yields(null, []);
         this.clock = this.useFakeTimers();
     },
 
     "watches directory": function () {
         autotest.watch("/some/dir");
-        assert.calledOnceWith(wt.watchTree, "/some/dir");
+        assert.calledOnceWith(chokidar.watch, "/some/dir");
     },
 
     "on change": {
         setUp: function () {
-            this.emitChange = function (name, opt) {
+            var self = this;
+            this.emit = function (event, file, opt) {
                 opt = opt || {};
-                wt.watchTree.args[0][2]({
-                    isMkdir: function () { return opt.isMkdir; },
-                    isDirectory: function () { return opt.isDir; },
-                    name: name
+                var args = self.watcher.on.args;
+                var indexOfEvent = -1;
+                var i;
+                for (i = 0; i < args.length; i++) {
+                    if (args[i][0] === event) {
+                        indexOfEvent = i;
+                        break;
+                    }
+                }
+                if (indexOfEvent === -1) {
+                    throw new Error("No handler registered for: " + event);
+                }
+                self.watcher.on.args[indexOfEvent][1](file, {
+                    isDirectory: function () {
+                        return opt.isDir;
+                    }
                 });
             };
+            this.emitChange = this.emit.bind(null, "change");
             this.failTests = function () { this.process.emit("exit", 1); };
             this.passTests = function () { this.process.emit("exit", 0); };
         },
@@ -59,9 +76,10 @@ buster.testCase("Autotest", {
 
         "does not run tests for mkdir event": function () {
             autotest.watch("/some/dir");
-            this.emitChange("test", { isMkdir: true });
-            this.clock.tick(10);
-            refute.called(cp.spawn);
+            assert.exception(
+                this.emit.bind(null, "addDir", "test"),
+                { message: "No handler registered for: addDir" }
+            );
         },
 
         "runs tests after 10ms": function () {
@@ -175,6 +193,54 @@ buster.testCase("Autotest", {
             this.clock.tick(10);
 
             assert.calledTwice(cp.spawn);
+        },
+
+        "runs all tests when passing after failing": function () {
+            autotest.watch("/some/dir");
+            this.emitChange("test/thing-test.js");
+            this.clock.tick(10);
+            this.failTests();
+            this.emitChange("test/thing-test.js");
+            this.clock.tick(10);
+            this.passTests();
+
+            assert.calledThrice(cp.spawn);
+            assert.calledWith(cp.spawn, "buster-test", []);
+        },
+
+        "runs originally selected tests when pass after fail": function () {
+            autotest.watch("/some/dir", { argv: ["-t", "test/boing.js"] });
+            this.emitChange("test/thing-test.js");
+            this.clock.tick(10);
+            this.failTests();
+            this.emitChange("test/thing-test.js");
+            this.clock.tick(10);
+            this.passTests();
+
+            assert.calledThrice(cp.spawn);
+            assert.calledWith(cp.spawn, "buster-test", ["-t", "test/boing.js"]);
+        },
+
+        "does not run all tests when failing after passing": function () {
+            autotest.watch("/some/dir");
+            this.emitChange("test/thing-test.js");
+            this.clock.tick(10);
+            this.passTests();
+            this.emitChange("test/thing-test.js");
+            this.clock.tick(10);
+            this.failTests();
+
+            assert.calledTwice(cp.spawn);
+        },
+
+        "does not re-run all tests after all passing": function () {
+            autotest.watch("/some/dir");
+            this.emitChange("test/thing-test.js");
+            this.clock.tick(10);
+            this.passTests();
+            this.clock.tick(10);
+
+            assert.calledOnce(cp.spawn);
         },
 
         "runs related test files": function () {
