@@ -22,6 +22,9 @@
     }],
     "license": "BSD-3-Clause",
     "main": "./lib/buster-autotest",
+    "engines": {
+        "node": ">= 4"
+    },
     "repository": {
         "type": "git",
         "url": "https://github.com/busterjs/buster-autotest.git"
@@ -31,10 +34,10 @@
         "test-debug": "node --debug-brk run-tests.js"
     },
     "dependencies": {
-        "chokidar": "^1.0.0",
-        "multi-glob": "=0.4.0"
+        "chokidar": "1.x",
+        "multi-glob": "1.x"
     },
     "devDependencies": {
-        "buster-node": ">=0.1"
+        "buster-node": "0.7.x"
     }
 }
