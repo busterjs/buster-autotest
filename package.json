@@ -1,43 +1,47 @@
 {
-    "name": "buster-autotest",
-    "version": "0.5.0",
-    "description": "Watch files and run buster tests on save",
-    "homepage": "http://busterjs.org/docs/autotest",
-    "author": {
-        "name": "Christian Johansen",
-        "email": "christian@cjohansen.no",
-        "url": "http://cjohansen.no"
+  "name": "buster-autotest",
+  "version": "0.6.0",
+  "description": "Watch files and run buster tests on save",
+  "homepage": "http://busterjs.org/docs/autotest",
+  "author": {
+    "name": "Christian Johansen",
+    "email": "christian@cjohansen.no",
+    "url": "http://cjohansen.no"
+  },
+  "contributors": [
+    {
+      "name": "Christian Johansen",
+      "email": "christian@cjohansen.no",
+      "url": "http://cjohansen.no"
     },
-    "contributors": [{
-        "name": "Christian Johansen",
-        "email": "christian@cjohansen.no",
-        "url": "http://cjohansen.no"
-    }, {
-        "name": "Magnar Sveen",
-        "email": "magnars@gmail.com"
-    }, {
-        "name": "Stein Magnus Jodal",
-        "email": "stein.magnus@jodal.no",
-        "url": "http://jodal.no"
-    }],
-    "license": "BSD-3-Clause",
-    "main": "./lib/buster-autotest",
-    "engines": {
-        "node": ">= 4"
+    {
+      "name": "Magnar Sveen",
+      "email": "magnars@gmail.com"
     },
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/busterjs/buster-autotest.git"
-    },
-    "scripts": {
-        "test": "node run-tests.js",
-        "test-debug": "node --debug-brk run-tests.js"
-    },
-    "dependencies": {
-        "chokidar": "1.x",
-        "multi-glob": "1.x"
-    },
-    "devDependencies": {
-        "buster-node": "0.7.x"
+    {
+      "name": "Stein Magnus Jodal",
+      "email": "stein.magnus@jodal.no",
+      "url": "http://jodal.no"
     }
+  ],
+  "license": "BSD-3-Clause",
+  "main": "./lib/buster-autotest",
+  "engines": {
+    "node": ">= 4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/busterjs/buster-autotest.git"
+  },
+  "scripts": {
+    "test": "node run-tests.js",
+    "test-debug": "node --debug-brk run-tests.js"
+  },
+  "dependencies": {
+    "chokidar": "1.x",
+    "multi-glob": "1.x"
+  },
+  "devDependencies": {
+    "buster-node": "0.7.x"
+  }
 }
